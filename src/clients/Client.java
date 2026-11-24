@@ -1,6 +1,8 @@
 package clients;
 
 public class Client {
+    private static int compteurClients;
+
     private String nom;
     private String prenom;
     private String numeroPermis;
@@ -14,7 +16,7 @@ public class Client {
         this.telephone = "N/A";
         this.anneeNaissance = 2000;
         System.out.println("Constructeur par défaut appelé");
-
+        compteurClients++;
     }
 
     public Client(String nom, String prenom, String numeroPermis, String telephone, int anneeNaissance) {
@@ -24,6 +26,7 @@ public class Client {
         this.telephone = telephone;
         this.anneeNaissance = anneeNaissance;
         System.out.println("Constructeur d'initialisation appelé");
+        compteurClients++;
     }
 
     public Client(Client c) {
@@ -42,7 +45,55 @@ public class Client {
             this.anneeNaissance = c.anneeNaissance;
         }
         System.out.println("Constructeur de copie appelé");
+        compteurClients++;
+    }
 
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public String getNumeroPermis() {
+        return numeroPermis;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public int getAnneeNaissance() {
+        return anneeNaissance;
+    }
+
+    public static int getCompteurClients() {
+        return compteurClients;
+    }
+
+    public Client setNom(String nom) {
+        this.nom = nom;
+        return this;
+    }
+
+    public Client setPrenom(String prenom) {
+        this.prenom = prenom;
+        return this;
+    }
+
+    public Client setTelephone(String telephone) {
+        this.telephone = telephone;
+        return this;
+    }
+
+    public Client setAnneeNaissance(int anneeNaissance) {
+        if (anneeNaissance < 0) {
+            System.out.println("ERREUR : La date de naissance ne peut pas être négative.");
+            return this;
+        }
+        this.anneeNaissance = anneeNaissance;
+        return this;
     }
 
     public int calculerAge(int anneeCourante) {
@@ -52,5 +103,24 @@ public class Client {
     public void afficherInfos() {
         System.out.println("Client{nom='" + nom + "', prenom='" + prenom + "', numeroPermis='" + numeroPermis
                 + "', telephone='" + telephone + "', anneeNaissance=" + anneeNaissance + "}");
+    }
+
+    @Override
+    public String toString() {
+        return String.format("[%s] %s %s - Tel : %s - Né(e) en %d",
+                numeroPermis, prenom, nom, telephone, anneeNaissance);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Client autre = (Client) obj;
+        return this.numeroPermis.equals(autre.numeroPermis);
+    }
+
+    @Override
+    public int hashCode() {
+        return numeroPermis.hashCode();
     }
 }
