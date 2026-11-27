@@ -40,7 +40,7 @@ public abstract class Vehicule implements Assurable, Reservable {
         compteurVehicules++;
     }
 
-    public Vehicule(Vehicule c) {
+    protected Vehicule(Vehicule c) {
         if (c == null) {
             System.out.println("ERREUR : le véhicule à copier est null, valeurs par défaut utilisées");
             this.immatriculation = "N/A";
