@@ -1,14 +1,14 @@
 package test;
 
-import vehicules.Vehicule;
+import vehicules.*;
 
 public class TestVehicules {
     public static void main(String[] args) {
         System.out.println("--- Tableau de 3 véhicules ---");
         Vehicule[] tolle = {
-                new Vehicule("AB-123-CD", "Renault", "Clio", 35.0),
-                new Vehicule("AB-123-CD", "Porsche", "GT3RS", 45.0),
-                new Vehicule("EF-456-GH", "Lamborghini", "Urus", 75.0),
+                new Voiture("AB-123-CD", "Renault", "Clio", 35.0, 5, "Essence", false),
+                new Voiture("AB-123-CD", "Porsche", "GT3RS", 45.0, 2, "Essence", true),
+                new Voiture("EF-456-GH", "Lamborghini", "Urus", 75.0, 5, "Essence", true),
         };
 
         for (Vehicule v : tolle) {
@@ -26,7 +26,7 @@ public class TestVehicules {
         System.out.println("v1.equals(v3) : " + v1.equals(v3));
         System.out.println("v1.equals(null) : " + v1.equals(null));
 
-        v1.setMarque("Peugeot").setModele("308").setKilometrage(1500).setTarifJournalier(40.0).setDisponible(false);
+        v1.setMarque("Peugeot").setModele("308").setKilometrage(1500).setTarifJournalier(40.0).setEtat(EtatVehicule.LOUE);
         System.out.println("Immatriculation : " + v1.getImmatriculation());
         System.out.println("Marque : " + v1.getMarque());
         System.out.println("Modèle : " + v1.getModele());
@@ -36,13 +36,29 @@ public class TestVehicules {
         v1.setKilometrage(-100);
         v1.setTarifJournalier(-10.0);
 
-        Vehicule defaut = new Vehicule();
+        Vehicule defaut = new Voiture();
         System.out.println(defaut);
-        Vehicule copie = new Vehicule(v1);
+        Vehicule copie = new Voiture((Voiture) v1);
         System.out.println(copie);
         System.out.println("copie.equals(v1) : " + copie.equals(v1));
-        Vehicule copieNull = new Vehicule(null);
+        Vehicule copieNull = new Voiture(null);
         System.out.println(copieNull);
         System.out.println("Compteur : " + Vehicule.getCompteurVehicules());
+
+        System.out.println("\n\n\n");
+        Vehicule[] flotte = {
+                new Voiture("AA-111-BB","Peugeot","308",45.0,5,"Essence",false),
+                new Moto("AA-222-BB","Yamaha","MT-07",30.0,689),
+                new Utilitaire("AA-333-BB","Renault","Master",60.0,12.0,1200),
+                new VehiculeLuxe("AA-444-BB","Mercedes","Classe S",250.0,4,"Essence",true,
+                        true, new String[]{"WiFi","Bar"})
+        };
+        for (Vehicule v : flotte) {
+            System.out.println(v);
+            if (v instanceof Moto) {
+                Moto m = (Moto) v;
+                System.out.println("Permis A2/A requis : " + m.necessitePermisA2OuA());
+            }
+        }
     }
 }

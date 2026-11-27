@@ -100,6 +100,10 @@ public class Client {
         return anneeCourante - this.anneeNaissance;
     }
 
+    public double calculerRemise() {
+        return 0.0;
+    }
+
     public void afficherInfos() {
         System.out.println("Client{nom='" + nom + "', prenom='" + prenom + "', numeroPermis='" + numeroPermis
                 + "', telephone='" + telephone + "', anneeNaissance=" + anneeNaissance + "}");
