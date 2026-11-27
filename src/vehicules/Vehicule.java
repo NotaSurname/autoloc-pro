@@ -1,21 +1,28 @@
 package vehicules;
 
-public class Vehicule {
-    private static int compteurVehicules;
-    public static final String DEVISE = "EUR";
+import clients.Client;
+import interfaces.Assurable;
+import interfaces.Reservable;
 
-    private String immatriculation;
-    private String marque;
-    private String modele;
-    private int kilometrage;
-    private double tarifJournalier;
-    private boolean disponible;
+public abstract class Vehicule implements Assurable, Reservable {
+    protected static int compteurVehicules;
+    protected static final String DEVISE = "EUR";
+
+    protected String immatriculation;
+    protected String marque;
+    protected String modele;
+    protected int kilometrage;
+    protected double tarifJournalier;
+    protected EtatVehicule etat;
+
+    private double franchise;
+    private boolean assure;
 
     public Vehicule() {
         this.immatriculation = "N/A";
         this.marque = "N/A";
         this.modele = "N/A";
-        this.disponible = true;
+        this.etat = EtatVehicule.DISPONIBLE;
         this.kilometrage = 0;
         this.tarifJournalier = 0.0;
         System.out.println("Constructeur par défaut appelé");
@@ -28,7 +35,7 @@ public class Vehicule {
         this.modele = modele;
         this.tarifJournalier = tarifJournalier;
         this.kilometrage = 0;
-        this.disponible = true;
+        this.etat = EtatVehicule.DISPONIBLE;
         System.out.println("Constructeur d'initialisation appelé");
         compteurVehicules++;
     }
@@ -41,14 +48,16 @@ public class Vehicule {
             this.modele = "N/A";
             this.kilometrage = 0;
             this.tarifJournalier = 0.0;
-            this.disponible = true;
+            this.etat = EtatVehicule.DISPONIBLE;
         } else {
             this.immatriculation = c.immatriculation;
             this.marque = c.marque;
             this.modele = c.modele;
             this.kilometrage = c.kilometrage;
             this.tarifJournalier = c.tarifJournalier;
-            this.disponible = c.disponible;
+            this.etat = c.etat;
+            this.franchise = c.franchise;
+            this.assure = c.assure;
         }
         System.out.println("Constructeur de copie appelé");
         compteurVehicules++;
@@ -74,8 +83,12 @@ public class Vehicule {
         return tarifJournalier;
     }
 
-    public boolean getDisponible() {
-        return disponible;
+    public EtatVehicule getEtat() {
+        return etat;
+    }
+
+    public boolean isDisponible() {
+        return etat == EtatVehicule.DISPONIBLE;
     }
 
     public static int getCompteurVehicules() {
@@ -110,8 +123,12 @@ public class Vehicule {
         return this;
     }
 
-    public Vehicule setDisponible(boolean disponible) {
-        this.disponible = disponible;
+    public Vehicule setEtat(EtatVehicule etat) {
+        if (etat == null) {
+            System.out.println("ERREUR : L'état ne peut pas être null.");
+            return this;
+        }
+        this.etat = etat;
         return this;
     }
 
@@ -119,17 +136,68 @@ public class Vehicule {
         this.kilometrage += km;
     }
 
+    public abstract double calculerTarifLocation(int nbJours);
+
+    public abstract String getCategorie();
+
+    protected void journaliser(String action) {
+        System.out.println("[LOG] " + getCategorie() + " " + immatriculation + " : " + action);
+    }
+
+    public double getFranchise() {
+        return franchise;
+    }
+
+    @Override
+    public double calculerPrimeAssurance() {
+        return TAUX_BASE_ASSURANCE * tarifJournalier;
+    }
+
+    @Override
+    public boolean estAssure() {
+        return assure;
+    }
+
+    @Override
+    public void souscrireAssurance(double montantFranchise) {
+        if (montantFranchise < 0) {
+            System.out.println("ERREUR : La franchise ne peut pas être négative.");
+            return;
+        }
+        this.franchise = montantFranchise;
+        this.assure = true;
+    }
+
+    @Override
+    public boolean estDisponiblePourReservation() {
+        return etat == EtatVehicule.DISPONIBLE;
+    }
+
+    @Override
+    public void reserver(Client client, int dureeJours) {
+        if (!estDisponiblePourReservation()) {
+            System.out.println("ERREUR : Le véhicule " + immatriculation + " n'est pas disponible (" + etat + ").");
+            return;
+        }
+        this.etat = EtatVehicule.LOUE;
+    }
+
+    @Override
+    public void libererReservation() {
+        this.etat = EtatVehicule.DISPONIBLE;
+    }
+
     public void afficherInfos() {
         System.out.println("Vehicule{immatriculation='" + immatriculation + "', marque='" + marque
                 + "', modele='" + modele + "', km=" + kilometrage + ", tarif=" + tarifJournalier
-                + ", disponible=" + disponible + "}");
+                + ", etat=" + etat + "}");
     }
 
     @Override
     public String toString() {
         return String.format("[%s] %s %s - %d km - %.2f %s/jour - %s",
                 immatriculation, marque, modele, kilometrage, tarifJournalier, DEVISE,
-                disponible ? "DISPONIBLE" : "INDISPONIBLE");
+                etat);
     }
 
     @Override

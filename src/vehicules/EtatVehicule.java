@@ -1,4 +1,7 @@
 package vehicules;
 
-public class EtatVehicule {
+public enum EtatVehicule {
+    DISPONIBLE,
+    LOUE,
+    EN_MAINTENANCE
 }

@@ -42,5 +42,5 @@ public class TestClients {
         Client c5 = new Client(null);
         System.out.println(c5);
         System.out.println("Compteur : " + Client.getCompteurClients());
-    }
+    } // Étape 7.3 -> faire les tests
 }
