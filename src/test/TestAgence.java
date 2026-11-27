@@ -5,7 +5,7 @@ import location.*;
 import vehicules.*;
 
 public class TestAgence {
-    public static void main(String[] args) {
+    public static void testAgence() {
         AgenceLocation agence = new AgenceLocation(10, 10, 10);
 
         System.out.println("\n--- Ajout des véhicules ---");

@@ -180,6 +180,10 @@ public class AgenceLocation {
             System.out.println("ERREUR : Le véhicule " + immat + " est actuellement loué.");
             return false;
         }
+        if (!((Maintenable) v).necessiteEntretien()) {
+            System.out.println("ERREUR : Le véhicule " + immat + " ne nécessite pas d'entretien pour le moment.");
+            return false;
+        }
         ((Maintenable) v).effectuerEntretien();
         return true;
     }
