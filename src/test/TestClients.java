@@ -5,7 +5,7 @@ import clients.Client;
 import java.time.Year;
 
 public class TestClients {
-    public static void main(String[] args) {
+    public static void testClient() {
         Client c1 = new Client("Dupont", "Jean", "019837", "0707070707", 2007);
         c1.afficherInfos();
         System.out.println("Age : " + c1.calculerAge(Year.now().getValue()));
@@ -42,5 +42,5 @@ public class TestClients {
         Client c5 = new Client(null);
         System.out.println(c5);
         System.out.println("Compteur : " + Client.getCompteurClients());
-    } // Étape 7.3 -> faire les tests
+    }
 }

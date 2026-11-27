@@ -4,7 +4,7 @@ import interfaces.Maintenable;
 import vehicules.*;
 
 public class TestVehicules {
-    public static void main(String[] args) {
+    public static void testVehicule() {
         Vehicule[] flotte = {
                 new Voiture("AA-111-BB","Peugeot","308",45.0,5,"Essence",false),
                 new Moto("AA-222-BB","Yamaha","MT-07",30.0,689),
@@ -26,5 +26,8 @@ public class TestVehicules {
                 }
             }
         }
+    }
+    public static void testAll() {
+        testVehicule();
     }
 }
